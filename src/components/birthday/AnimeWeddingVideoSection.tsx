@@ -16,7 +16,7 @@ export default function AnimeWeddingVideoSection() {
   const [hasEnded, setHasEnded] = useState(false);
   const [progress, setProgress] = useState(0);
   const [currentTimeText, setCurrentTimeText] = useState("0:00");
-  const [durationText, setDurationText] = useState("0:24");
+  const [durationText, setDurationText] = useState("0:27");
   const [showControls, setShowControls] = useState(true);
 
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -81,14 +81,14 @@ export default function AnimeWeddingVideoSection() {
   const handleTimeUpdate = () => {
     if (!videoRef.current) return;
     const cur = videoRef.current.currentTime;
-    const dur = videoRef.current.duration || 24;
+    const dur = videoRef.current.duration || 27;
     setProgress((cur / dur) * 100);
     setCurrentTimeText(formatTime(cur));
   };
 
   const handleLoadedMetadata = () => {
     if (!videoRef.current) return;
-    setDurationText(formatTime(videoRef.current.duration || 24));
+    setDurationText(formatTime(videoRef.current.duration || 27));
   };
 
   const handleVideoEnded = () => {
@@ -124,7 +124,7 @@ export default function AnimeWeddingVideoSection() {
     const rect = e.currentTarget.getBoundingClientRect();
     const clickX = e.clientX - rect.left;
     const ratio = Math.max(0, Math.min(1, clickX / rect.width));
-    const targetTime = ratio * (videoRef.current.duration || 24);
+    const targetTime = ratio * (videoRef.current.duration || 27);
     videoRef.current.currentTime = targetTime;
   };
 
@@ -205,7 +205,7 @@ export default function AnimeWeddingVideoSection() {
             <video
               ref={videoRef}
               src="/videos/naruto-wedding-surprise.mp4"
-              poster="/images/characters/scene1_village.png"
+              poster="/images/characters/wedding_s1.png"
               playsInline
               preload="auto"
               onPlay={() => setIsPlaying(true)}
@@ -257,7 +257,7 @@ export default function AnimeWeddingVideoSection() {
                   {/* Background ambient poster image */}
                   <div className="absolute inset-0 opacity-40 pointer-events-none">
                     <Image
-                      src="/images/characters/scene1_village.png"
+                      src="/images/characters/wedding_s1.png"
                       alt="Wedding Surprise Preview"
                       fill
                       className="object-cover blur-sm"

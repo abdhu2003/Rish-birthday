@@ -98,40 +98,77 @@ export default function AnimeHero({ onEnter }: AnimeHeroProps) {
           transition={{ duration: 0.8, delay: 0.4 }}
           className="relative max-w-xs sm:max-w-sm w-full mx-auto mb-10 px-2"
         >
-          {/* Shimmering Animated Chakra Halo */}
-          <div className="absolute -inset-3 rounded-3xl bg-gradient-to-r from-pink-500 via-amber-400 to-rose-500 opacity-60 blur-xl animate-chakra-pulse pointer-events-none" />
+          {/* Shimmering Animated Chakra & Heart Halo */}
+          <div className="absolute -inset-3 rounded-3xl bg-gradient-to-r from-pink-500 via-rose-500 to-amber-400 opacity-65 blur-xl animate-chakra-pulse pointer-events-none" />
+
+          {/* Floating Heart Badges around the frame */}
+          <motion.div
+            animate={{ y: [-4, 4, -4], rotate: [-6, 6, -6] }}
+            transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+            className="absolute -top-3 -right-2 z-20 p-2 rounded-full bg-pink-500/90 border border-white/60 shadow-[0_0_15px_rgba(255,20,147,0.8)] pointer-events-none"
+          >
+            <Heart className="w-4 h-4 fill-white text-white" />
+          </motion.div>
+
+          <motion.div
+            animate={{ y: [4, -4, 4], rotate: [6, -6, 6] }}
+            transition={{ duration: 3.5, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
+            className="absolute -bottom-2 -left-2 z-20 p-1.5 rounded-full bg-rose-600/90 border border-amber-300/60 shadow-[0_0_15px_rgba(255,105,180,0.8)] pointer-events-none"
+          >
+            <Heart className="w-3.5 h-3.5 fill-amber-200 text-amber-200" />
+          </motion.div>
 
           {/* Glassmorphism Shinobi Frame */}
-          <div className="relative rounded-3xl p-4 sm:p-5 bg-gradient-to-b from-[#240a2a]/95 via-[#18061f]/95 to-[#0e0313] border-2 border-pink-400/60 shadow-[0_15px_50px_rgba(255,105,180,0.5)] backdrop-blur-2xl flex flex-col items-center text-center group hover:border-pink-300 transition-all duration-300">
+          <div
+            onClick={() => {
+              fireHeartExplosion(0.5, 0.45);
+              fireCelebrationConfetti();
+              audioController.playSparkleSound();
+            }}
+            className="relative rounded-3xl p-4 sm:p-5 bg-gradient-to-b from-[#280c2e]/95 via-[#1a0721]/95 to-[#0e0313] border-2 border-pink-400/70 shadow-[0_15px_50px_rgba(255,105,180,0.55)] backdrop-blur-2xl flex flex-col items-center text-center group hover:border-pink-300 transition-all duration-300 cursor-pointer"
+          >
             {/* Top Crown Ribbon */}
-            <div className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-gradient-to-r from-amber-500 via-pink-500 to-rose-500 border border-white/40 text-white text-xs font-bold shadow-[0_0_15px_rgba(255,180,0,0.6)] mb-3">
+            <div className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-gradient-to-r from-amber-500 via-pink-500 to-rose-500 border border-white/40 text-white text-xs font-bold shadow-[0_0_15px_rgba(255,180,0,0.6)] mb-3 group-hover:scale-105 transition-transform">
               <Crown className="w-3.5 h-3.5 text-amber-200 fill-amber-200" />
               <span>Birthday Queen 👑</span>
             </div>
 
-            {/* Anime Portrait Frame */}
-            <div className="relative w-44 h-56 sm:w-52 sm:h-64 rounded-2xl overflow-hidden border-2 border-pink-400/80 shadow-[0_0_30px_rgba(255,105,180,0.6)] group-hover:scale-105 transition-transform duration-500 mb-3 bg-black/60">
+            {/* Birthday Girl Real Photo Frame */}
+            <div className="relative w-48 h-60 sm:w-56 sm:h-72 rounded-2xl overflow-hidden border-2 border-pink-400/90 shadow-[0_0_35px_rgba(255,105,180,0.7)] group-hover:scale-105 transition-transform duration-500 mb-3 bg-black/60">
               <img
-                src="/images/characters/rishdha.png"
-                alt="Rishdha [Bestie]"
-                className="w-full h-full object-cover"
+                src="/images/characters/rishdha_portrait.jpg"
+                alt="Rishdha - The Birthday Girl"
+                className="w-full h-full object-cover object-center"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent pointer-events-none" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/10 to-transparent pointer-events-none" />
+
+              {/* Glowing Corner Accents */}
+              <div className="absolute top-2 left-2 p-1.5 rounded-full bg-black/60 backdrop-blur-md border border-pink-400/40 pointer-events-none">
+                <Sparkles className="w-3 h-3 text-amber-300" />
+              </div>
+              <div className="absolute top-2 right-2 p-1.5 rounded-full bg-black/60 backdrop-blur-md border border-pink-400/40 pointer-events-none">
+                <Heart className="w-3 h-3 fill-rose-400 text-rose-400 animate-pulse" />
+              </div>
 
               <div className="absolute bottom-2.5 left-2 right-2 text-center pointer-events-none">
-                <span className="text-[10px] uppercase tracking-wider text-orange-400 font-bold block mb-0.5">
-                  Guest of Honor
+                <span className="text-[10px] uppercase tracking-wider text-amber-300 font-bold block mb-0.5">
+                  Our Shining Star
                 </span>
-                <h3 className="font-serif text-base sm:text-lg font-bold text-white glow-text-pink">
-                  Rishdha [Bestie] 🌸
+                <h3 className="font-serif text-lg sm:text-xl font-bold text-white glow-text-pink">
+                  Rishdha 💖
                 </h3>
               </div>
             </div>
 
             {/* Friendship Blessing Tag */}
-            <div className="px-3 py-1 rounded-full bg-pink-500/15 border border-pink-400/30 text-pink-200 text-[11px] sm:text-xs italic font-light shadow-inner">
-              ✨ Konoha's Most Cherished Shinobi & Soul Sister 💖
+            <div className="px-3.5 py-1.5 rounded-full bg-pink-500/20 border border-pink-400/40 text-pink-200 text-[11px] sm:text-xs italic font-medium shadow-inner flex items-center gap-1.5">
+              <Heart className="w-3 h-3 fill-pink-400 text-pink-400" />
+              <span>Konoha&apos;s Most Cherished Shinobi & Soul Sister ✨</span>
             </div>
+
+            <span className="text-[10px] text-pink-300/70 mt-1.5 font-light">
+              Tap photo for heart blessing 💖
+            </span>
           </div>
         </motion.div>
 

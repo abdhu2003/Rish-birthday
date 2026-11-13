@@ -96,7 +96,7 @@ export default function BirthdayLetter() {
 
             {/* Letter Content - Staggered Paragraphs */}
             <div className="space-y-5 sm:space-y-6 text-orange-50 leading-relaxed text-sm sm:text-lg font-light">
-              {birthdayConfig.letter.paragraphs.map((p, idx) => (
+              {birthdayConfig.letter.paragraphs.slice(0, 3).map((p, idx) => (
                 <motion.p
                   key={idx}
                   initial={{ opacity: 0, y: 12 }}
@@ -106,7 +106,51 @@ export default function BirthdayLetter() {
                   className={
                     idx === 0
                       ? "font-serif text-xl sm:text-2xl text-amber-200 font-bold leading-snug"
-                      : idx === birthdayConfig.letter.paragraphs.length - 1
+                      : "text-orange-100/90"
+                  }
+                >
+                  {p}
+                </motion.p>
+              ))}
+
+              {/* Rishdha Birthday Girl Scroll Keepsake */}
+              <motion.div
+                initial={{ opacity: 0, scale: 0.95 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6 }}
+                className="my-6 mx-auto max-w-xs p-3.5 rounded-2xl bg-gradient-to-b from-white/10 via-black/40 to-black/70 border-2 border-pink-400/50 shadow-[0_0_25px_rgba(255,105,180,0.35)] backdrop-blur-md flex flex-col items-center text-center rotate-[-1.5deg] hover:rotate-0 transition-transform duration-300"
+              >
+                <div className="relative w-44 h-56 rounded-xl overflow-hidden border border-white/40 mb-2.5 shadow-inner">
+                  <img
+                    src="/images/characters/rishdha_portrait.jpg"
+                    alt="Rishdha [Our Bestie]"
+                    className="w-full h-full object-cover object-center"
+                  />
+                  <div className="absolute top-2 right-2 p-1.5 rounded-full bg-black/60 backdrop-blur-md">
+                    <Heart className="w-4 h-4 fill-rose-400 text-rose-400 animate-pulse" />
+                  </div>
+                  <div className="absolute bottom-1.5 left-2 right-2 px-2 py-0.5 rounded-md bg-black/70 backdrop-blur-sm text-[10px] text-pink-200 font-bold uppercase tracking-wider">
+                    Birthday Queen 👑
+                  </div>
+                </div>
+                <span className="font-serif text-base font-bold text-amber-200">
+                  Rishdha • Our Shining Soul Sister
+                </span>
+                <span className="text-[11px] text-pink-200/80 italic">
+                  Forever treasured in the Will of Fire 🌸💖
+                </span>
+              </motion.div>
+
+              {birthdayConfig.letter.paragraphs.slice(3).map((p, idx) => (
+                <motion.p
+                  key={idx + 3}
+                  initial={{ opacity: 0, y: 12 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.5, delay: 0.2 + idx * 0.1 }}
+                  className={
+                    idx + 3 === birthdayConfig.letter.paragraphs.length - 1
                       ? "font-serif text-base sm:text-xl text-rose-300 font-semibold"
                       : "text-orange-100/90"
                   }

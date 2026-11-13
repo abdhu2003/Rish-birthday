@@ -16,6 +16,31 @@ interface SakuraPetal {
   color: string;
 }
 
+interface FloatingHeart {
+  x: number;
+  y: number;
+  size: number;
+  speedY: number;
+  speedX: number;
+  rotation: number;
+  rotationSpeed: number;
+  swaySpeed: number;
+  swayOffset: number;
+  opacity: number;
+  color: string;
+}
+
+interface ClickHeart {
+  x: number;
+  y: number;
+  vx: number;
+  vy: number;
+  size: number;
+  alpha: number;
+  color: string;
+  rotation: number;
+}
+
 interface ChakraParticle {
   x: number;
   y: number;
@@ -48,7 +73,7 @@ export default function SakuraParticles() {
     };
     window.addEventListener("resize", handleResize);
 
-    // Sakura petals setup
+    // 1. Sakura petals setup
     const petalColors = [
       "rgba(255, 183, 197, ", // Soft Sakura Pink
       "rgba(255, 105, 180, ", // Hot Pink
@@ -56,7 +81,7 @@ export default function SakuraParticles() {
       "rgba(244, 114, 182, ", // Vibrant Cherry
     ];
 
-    const petalCount = Math.min(Math.floor(width / 32), 40);
+    const petalCount = Math.min(Math.floor(width / 34), 32);
     const petals: SakuraPetal[] = [];
 
     for (let i = 0; i < petalCount; i++) {
@@ -75,7 +100,58 @@ export default function SakuraParticles() {
       });
     }
 
-    // Glowing chakra particles (orange & cyan blue)
+    // 2. Floating Romantic Hearts Setup
+    const heartColors = [
+      "rgba(255, 20, 147, ",  // Deep Pink
+      "rgba(255, 105, 180, ", // Hot Pink
+      "rgba(244, 63, 94, ",   // Rose Red
+      "rgba(251, 113, 133, ", // Warm Peach Pink
+      "rgba(217, 70, 239, ",  // Fuchsia
+    ];
+
+    const heartCount = Math.min(Math.floor(width / 45), 24);
+    const hearts: FloatingHeart[] = [];
+
+    for (let i = 0; i < heartCount; i++) {
+      hearts.push({
+        x: Math.random() * width,
+        y: Math.random() * height,
+        size: Math.random() * 12 + 10,
+        speedY: -(Math.random() * 0.8 + 0.4), // Float upwards
+        speedX: (Math.random() - 0.5) * 0.4,
+        rotation: (Math.random() - 0.5) * 30,
+        rotationSpeed: (Math.random() - 0.5) * 0.8,
+        swaySpeed: Math.random() * 0.025 + 0.012,
+        swayOffset: Math.random() * Math.PI * 2,
+        opacity: Math.random() * 0.45 + 0.35,
+        color: heartColors[Math.floor(Math.random() * heartColors.length)],
+      });
+    }
+
+    // 3. Interactive Click Hearts Array
+    const clickHearts: ClickHeart[] = [];
+
+    const handlePointerDown = (e: MouseEvent | TouchEvent) => {
+      const clientX = "touches" in e ? e.touches[0].clientX : e.clientX;
+      const clientY = "touches" in e ? e.touches[0].clientY : e.clientY;
+      for (let i = 0; i < 7; i++) {
+        const angle = (Math.PI * 2 * i) / 7 + (Math.random() - 0.5) * 0.6;
+        const speed = Math.random() * 2.8 + 1.2;
+        clickHearts.push({
+          x: clientX,
+          y: clientY,
+          vx: Math.cos(angle) * speed,
+          vy: Math.sin(angle) * speed - 1.8,
+          size: Math.random() * 9 + 8,
+          alpha: 1.0,
+          color: heartColors[Math.floor(Math.random() * heartColors.length)],
+          rotation: (Math.random() - 0.5) * 45,
+        });
+      }
+    };
+    window.addEventListener("pointerdown", handlePointerDown);
+
+    // 4. Glowing chakra particles (orange & cyan blue)
     const chakraColors = [
       "rgba(255, 140, 0, ",  // Naruto Nine-Tails Orange
       "rgba(255, 180, 0, ",  // Golden Chakra
@@ -83,7 +159,7 @@ export default function SakuraParticles() {
       "rgba(56, 189, 248, ", // Light Sky Blue
     ];
 
-    const chakraCount = Math.min(Math.floor(width / 40), 30);
+    const chakraCount = Math.min(Math.floor(width / 45), 22);
     const chakraParticles: ChakraParticle[] = [];
 
     for (let i = 0; i < chakraCount; i++) {
@@ -113,12 +189,36 @@ export default function SakuraParticles() {
       ctx.restore();
     };
 
+    const drawHeart = (
+      x: number,
+      y: number,
+      size: number,
+      rot: number,
+      color: string,
+      opacity: number
+    ) => {
+      ctx.save();
+      ctx.translate(x, y);
+      ctx.rotate((rot * Math.PI) / 180);
+      ctx.beginPath();
+      const topCurveHeight = size * 0.35;
+      ctx.moveTo(0, topCurveHeight);
+      ctx.bezierCurveTo(-size / 2, -topCurveHeight, -size, size / 3, 0, size);
+      ctx.bezierCurveTo(size, size / 3, size / 2, -topCurveHeight, 0, topCurveHeight);
+      ctx.closePath();
+      ctx.fillStyle = `${color}${opacity})`;
+      ctx.shadowColor = "#FF1493";
+      ctx.shadowBlur = 8;
+      ctx.fill();
+      ctx.restore();
+    };
+
     let tick = 0;
     const render = () => {
       ctx.clearRect(0, 0, width, height);
       tick++;
 
-      // Render glowing chakra sparks
+      // 1. Render glowing chakra sparks
       for (let i = 0; i < chakraParticles.length; i++) {
         const cp = chakraParticles[i];
         cp.y += cp.speedY;
@@ -146,7 +246,7 @@ export default function SakuraParticles() {
 
       ctx.shadowBlur = 0;
 
-      // Render falling sakura petals
+      // 2. Render falling sakura petals
       for (let i = 0; i < petals.length; i++) {
         const p = petals[i];
         p.y += p.speedY;
@@ -164,6 +264,39 @@ export default function SakuraParticles() {
         drawPetal(p.x, p.y, p.size, p.rotation, p.color, p.opacity);
       }
 
+      // 3. Render floating romantic hearts (rising upward)
+      for (let i = 0; i < hearts.length; i++) {
+        const h = hearts[i];
+        h.y += h.speedY;
+        h.x += Math.sin(tick * h.swaySpeed + h.swayOffset) * 0.9 + h.speedX;
+        h.rotation += h.rotationSpeed;
+
+        if (h.y < -30) {
+          h.y = height + 20;
+          h.x = Math.random() * width;
+        }
+        if (h.x < -20) h.x = width + 20;
+        if (h.x > width + 20) h.x = -20;
+
+        drawHeart(h.x, h.y, h.size, h.rotation, h.color, h.opacity);
+      }
+
+      // 4. Render interactive click hearts
+      for (let i = clickHearts.length - 1; i >= 0; i--) {
+        const ch = clickHearts[i];
+        ch.x += ch.vx;
+        ch.y += ch.vy;
+        ch.vy += 0.05; // Gentle float
+        ch.alpha -= 0.015;
+        ch.rotation += 1.2;
+
+        if (ch.alpha <= 0) {
+          clickHearts.splice(i, 1);
+        } else {
+          drawHeart(ch.x, ch.y, ch.size, ch.rotation, ch.color, Math.max(0, ch.alpha));
+        }
+      }
+
       animationId = requestAnimationFrame(render);
     };
 
@@ -171,6 +304,7 @@ export default function SakuraParticles() {
 
     return () => {
       window.removeEventListener("resize", handleResize);
+      window.removeEventListener("pointerdown", handlePointerDown);
       cancelAnimationFrame(animationId);
     };
   }, []);
@@ -178,9 +312,8 @@ export default function SakuraParticles() {
   return (
     <canvas
       ref={canvasRef}
-      className="fixed inset-0 pointer-events-none z-10 opacity-80"
+      className="fixed inset-0 pointer-events-none z-10 opacity-85"
       aria-hidden="true"
     />
   );
 }
-
